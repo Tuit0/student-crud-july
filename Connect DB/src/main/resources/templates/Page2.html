@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add or Edit page</title>
+</head>
+<body>
+<a href="/">Home</a>
+<fieldset style="margin: 10% 35% 35%;">
+    <legend>
+        <span th:if="${id==null}">Add student</span>
+        <span th:unless="${id==null}">Edit student</span>
+    </legend>
+    <form method="post" th:action="@{/api/students/addOrEditStudent(id=${id})}">
+        <table>
+            <tr>
+                <td><label for="firstname">Firstname</label></td>
+                <td><input id="firstname" name="firstname" th:value="${firstname}" type="text"></td>
+            </tr>
+            <tr>
+                <td><label for="lastname">Lastname</label></td>
+                <td><input id="lastname" name="lastname" th:value="${lastname}" type="text"></td>
+            </tr>
+            <tr>
+                <td><label for="age">Age</label></td>
+                <td><input id="age" name="age" th:value="${age}" type="number"></td>
+            </tr>
+            <tr>
+                <td><label for="phone">Phone Number</label></td>
+                <td><input id="phone" name="phone" th:value="${phone}" type="text"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input style="background-color: deepskyblue" type="submit" th:value="${id==null}?'ADD':'EDIT'">
+                </td>
+            </tr>
+        </table>
+
+    </form>
+</fieldset>
+</body>
+</html>

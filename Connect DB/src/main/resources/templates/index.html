@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Info</title>
+    <style>
+        .button
+        {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4%;
+        }
+
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <button class="button" onclick="add()">Add Student</button> <br><br>
+</div>
+<table border="2px" style="margin: 5% 35% 25%">
+    <thead>
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Age</th>
+        <th>Phone number</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody id="users"></tbody>
+</table>
+<script>
+    fetch("/api/students/getAllStudents")
+        .then(response => {
+            if (!response.ok) {
+                alert("Something went wrong!")
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data)
+            const html = data.object
+                .map(
+                    student => {
+                        return `
+                            <tr>
+                                <td>${student.firstname}</td>
+                                <td>${student.lastname}</td>
+                                <td>${student.age}</td>
+                                <td>${student.phoneNumber}</td>
+                                <td><button style="background-color: yellow" onclick="edit(${student.id})">Edit</button></td>
+                                <td><button style="background-color: red" onclick="deleteBtn(${student.id})">Delete</button></td>
+                            </tr>
+                    `}
+                ).join("");
+            document.querySelector("#users").insertAdjacentHTML("afterbegin", html);
+        })
+        .catch(
+            error => {
+                alert(error)
+            }
+        );
+
+    function add() {
+        location.replace("http://localhost/addOrEdit")
+    }
+    function edit(id) {
+        location.replace("http://localhost/addOrEdit?id="+id)
+    }
+    function deleteBtn(id) {
+        location.replace("http://localhost/api/students/deleteStudent/"+id)
+    }
+</script>
+</body>
+</html>
